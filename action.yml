@@ -25,10 +25,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Install tsqllint
-      shell: pwsh
-      run: npm install -g tsqllint@${{ inputs.tsqllint-version }}
-
     - name: Run tsqllint
       id: run-lint
       shell: pwsh
@@ -40,7 +36,7 @@ runs:
 
         $PathToScripts = "`"$(Resolve-Path ${{ inputs.path-to-sql-files }})\${{ inputs.file-name-filter }}`""
         echo "Running TSqlLint on folder $PathToScripts"
-        $Result = Invoke-Expression "tsqllint $PathToScripts -c ${{ inputs.path-to-lint-config }}" | Out-String
+        $Result = Invoke-Expression "npm run lint -- $PathToScripts -c ${{ inputs.path-to-lint-config }}" | Out-String
 
         Write-Host "Displaying TSqlLint Results"
         if ($Result.ToLower() -like "*): error*") {     
