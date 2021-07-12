@@ -1,72 +1,43 @@
-# composite-run-steps-action-template
+# tsql-lint-action
 
-This template can be used to quickly start a new custom composite-run-steps action repository.  Click the `Use this template` button at the top to get started.
-
-## TODOs
-- Readme
-  - [ ] Update the Inputs section with the correct action inputs
-  - [ ] Update the Outputs section with the correct action outputs
-  - [ ] Update the Example section with the correct usage   
-- action.yml
-  - [ ] Fill in the correct name, description, inputs and outputs and implement steps
-- CODEOWNERS
-  - [ ] Update as appropriate
-- Repository Settings
-  - [ ] On the *Options* tab check the box to *Automatically delete head branches*
-  - [ ] On the *Options* tab update the repository's visibility
-  - [ ] On the *Branches* tab add a branch protection rule
-    - [ ] Check *Require pull request reviews before merging*
-    - [ ] Check *Dismiss stale pull request approvals when new commits are pushed*
-    - [ ] Check *Require review from Code Owners*
-    - [ ] Check *Include Administrators*
-  - [ ] On the *Manage Access* tab add the appropriate groups
-- About Section (accessed on the main page of the repo, click the gear icon to edit)
-  - [ ] The repo should have a short description of what it is for
-  - [ ] Add one of the following topic tags:
-    | Topic Tag       | Usage                                    |
-    | --------------- | ---------------------------------------- |
-    | az              | For actions related to Azure             |
-    | code            | For actions related to building code     |
-    | certs           | For actions related to certificates      |
-    | db              | For actions related to databases         |
-    | git             | For actions related to Git               |
-    | iis             | For actions related to IIS               |
-    | microsoft-teams | For actions related to Microsoft Teams   |
-    | svc             | For actions related to Windows Services  |
-    | jira            | For actions related to Jira              |
-    | meta            | For actions related to running workflows |
-    | pagerduty       | For actions related to PagerDuty         |
-    | test            | For actions related to testing           |
-    | tf              | For actions related to Terraform         |
-  - [ ] Add any additional topics for an action if they apply    
+An Action that runs [tsqllint](https://github.com/tsqllint/tsqllint) on SQL files.
     
 
 ## Inputs
-| Parameter | Is Required | Description           |
+| Parameter | Is Required | Default | Description           |
 | --------- | ----------- | --------------------- |
-| `input-1` | true        | Description goes here |
-| `input-2` | false       | Description goes here |
+| `tsqllint-version`    | true     | 1.11.0 | The version of tsqllint to use. |
+| `path-to-sql-files`   | true     | N/A    | The path to the folder that contains the SQL files to lint. |
+| `path-to-lint-config` | true     | The file located at the root of this action | The path to the tsqllint config file. |
+| `file-name-filter`    | false    | N/A    | The filter to apply when choosing which files to lint. |
 
 ## Outputs
-| Output     | Description           |
-| ---------- | --------------------- |
-| `output-1` | Description goes here |
+| Output        | Description                                           |
+| ------------- | ----------------------------------------------------- |
+| `lint-result` | The result returned from running the tsqllint command |
 
 ## Example
 
 ```yml
 # TODO: Fill in the correct usage
 jobs:
-  job1:
-    runs-on: [self-hosted]
+  lint-files:
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
 
-      - name: Add the action here
-        uses: im-open/this-repo@v1.0.0
+      - id: sql-file-folder
+        shell: pwsh
+        run: echo "::set-output name=folder::$($(Get-Date).Year).$($(Get-Date).Month.ToString("00"))"
+
+      
+      - name: SQL Lint
+        uses: ./.github/actions/tsqllint
         with:
-          input-1: 'abc'
-          input-2: '123
+          tsqllint-version: 1.11.0
+          path-to-sql-files: "Database/src/Migrations/${{ steps.sql-file-folder.outputs.folder }}"
+          file-name-filter: "*.sql"
+          path-to-lint-config: ./Database/src/.tsqllintrc
 ```
 
 

@@ -1,0 +1,16 @@
+name: Increment Version on Merge
+on: push #pull_request
+
+jobs:
+  test-success:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Test
+        uses: ./
+        with:
+          path-to-sql-files: ./.github/workflows/test-sql-files/
+          file-name-filter: ShouldSucceed.sql

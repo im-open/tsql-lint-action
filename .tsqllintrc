@@ -1,0 +1,32 @@
+{
+    "rules": {
+        "conditional-begin-end": "off",
+        "cross-database-transaction": "off",
+        "data-compression": "off",
+        "data-type-length": "error",
+        "disallow-cursors": "off",
+        "full-text": "off",
+        "information-schema": "off",
+        "keyword-capitalization": "error",
+        "linked-server": "off",
+        "multi-table-alias": "off",
+        "named-constraint": "off",
+        "non-sargable": "off",
+        "object-property": "off",
+        "print-statement": "off",
+        "schema-qualify": "error",
+        "select-star": "off",
+        "semicolon-termination": "error",
+        "set-ansi": "off",
+        "set-nocount": "off",
+        "set-quoted-identifier": "off",
+        "set-transaction-isolation-level": "off",
+        "set-variable": "off",
+        "upper-lower": "off",
+        "unicode-string": "error"
+    },
+    "plugins": {
+        "wtw-custom-rules": "src\\tsqllint\\tsqllint.customrules.1.0.64\\custom-rules\\tsqllint-customrules.dll"
+    },
+    "compatability-level": 140
+}
