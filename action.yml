@@ -1,22 +1,67 @@
-name: 'Composite Run Steps Action Template'
+name: Run SQL Linting
 
-description: 'Add description here'
+description: Uses tsqllint to lint sql files
 
 inputs:
-  input-1:
-    description: 'Add a description here'
+  tsqllint-version:
+    description: The version of tsqllint to use.
     required: true
+    default: 1.11.0
+  path-to-sql-files:
+    description: Path to the sql files to lint.
+    required: true
+  path-to-lint-config:
+    description: Path to lint config. If not provided, defaults to the config at the root of this action.
+  file-name-filter:
+    description: Filters the files to lint by name.
 
 outputs:
-  output-1:
-    description: 'Add description here'
-    value: '${{ steps.step_1.outputs.world }}'
-
+  lint-result:
+    description: The result of the lint run.
+    value: ${{ steps.run-lint.outputs.result }}
+  
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
-    - name: Step 1
-      id: step_1
-      shell: bash
+    - name: Npm Install
+      shell: pwsh
+      run: npm --prefix ${{ github.action_path }} install ${{ github.action_path }}
+
+    - name: Determine config file path
+      id: config-file-path
+      shell: pwsh
       run: |
-        echo "::set-output name=hello::world"
+        if ([string]::IsNullOrEmpty("${{ inputs.path-to-lint-config }}") -or !(Test-Path ${{ inputs.path-to-lint-config }})) {
+          echo "::set-output name=path::${{ github.action_path }}/.tsqllintrc"
+        }
+        else {
+          echo "::set-output name=path::${{ inputs.path-to-lint-config }}"
+        }
+
+    - name: Run tsqllint
+      id: run-lint
+      shell: pwsh
+      run: |
+        if (!(Test-Path ${{ inputs.path-to-sql-files }})) {
+          Write-Warning "Migrations path is invalid (${{ inputs.path-to-sql-files }}), skipping run of tsqllint"
+          return
+        }
+
+        $PathToScripts = "`"$(Join-Path $(Resolve-Path ${{ inputs.path-to-sql-files }}) ${{ inputs.file-name-filter }})`""
+        echo "Running TSqlLint on folder $PathToScripts"
+        $Result = Invoke-Expression "npm --prefix ${{ github.action_path }} run lint --  $PathToScripts -c ${{ steps.config-file-path.outputs.path }}" | Out-String
+
+        Write-Host "Displaying TSqlLint Results"
+        if ($Result.ToLower() -like "*): error*") {     
+          Write-Host "TSqlLint Found 1 or more Errors"   
+          Write-Error $Result
+        }
+        elseif ($Result.ToLower() -like "*'tsqllint' is not recognized as an internal or external command*") {
+          Write-Error "TSqlLint cannot be found"
+        }
+        else {
+          Write-Host "TSqlLint Found 0 Errors"
+          Write-Host $Result
+        }
+
+        echo "::set-output name=result::$(echo $Result)"

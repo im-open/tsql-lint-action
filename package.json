@@ -1,0 +1,15 @@
+{
+  "name": "tsql-lint-action",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "lint": "tsqllint"
+  },
+  "keywords": [],
+  "author": "wtw",
+  "license": "ISC",
+  "dependencies": {
+    "tsqllint": "^1.11.0"
+  }
+}
