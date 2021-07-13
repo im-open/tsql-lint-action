@@ -1,1 +1,0 @@
-SELECT * FROM dbo.FakeTable where FakeTable.id = 1

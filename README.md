@@ -1,11 +1,11 @@
 # tsql-lint-action
 
 An Action that runs [tsqllint](https://github.com/tsqllint/tsqllint) on SQL files.
-    
+
 
 ## Inputs
 | Parameter | Is Required | Default | Description           |
-| --------- | ----------- | --------------------- |
+| --------- | ----------- | ------- | --------------------- |
 | `tsqllint-version`    | true     | 1.11.0 | The version of tsqllint to use. |
 | `path-to-sql-files`   | true     | N/A    | The path to the folder that contains the SQL files to lint. |
 | `path-to-lint-config` | true     | The file located at the root of this action | The path to the tsqllint config file. |
