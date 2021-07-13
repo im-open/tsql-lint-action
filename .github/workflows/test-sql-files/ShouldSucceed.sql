@@ -1,1 +1,1 @@
-SELECT * FROM dbo.FakeTable WHERE FakeTable.id = 1
+SELECT * FROM dbo.FakeTable WHERE FakeTable.id = 1;

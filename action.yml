@@ -11,9 +11,7 @@ inputs:
     description: Path to the sql files to lint.
     required: true
   path-to-lint-config:
-    description: Path to lint config.
-    default: ${{ github.action_path }}\.tsqllintrc
-    required: true
+    description: Path to lint config. If not provided, defaults to the config at the root of this action.
   file-name-filter:
     description: Filters the files to lint by name.
 
@@ -25,6 +23,17 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Determine config file path
+      id: config-file-path
+      shell: pwsh
+      run: |
+        if ([string]::IsNullOrEmpty("${{ inputs.path-to-lint-config }}") -or !(Test-Path ${{ inputs.path-to-lint-config }})) {
+          echo "::set-output name=path::${{ github.action_path }}/.tsqllintrc"
+        }
+        else {
+          echo "::set-output name=path::${{ inputs.path-to-lint-config }}"
+        }
+
     - name: Run tsqllint
       id: run-lint
       shell: pwsh
@@ -36,7 +45,7 @@ runs:
 
         $PathToScripts = "`"$(Resolve-Path ${{ inputs.path-to-sql-files }})\${{ inputs.file-name-filter }}`""
         echo "Running TSqlLint on folder $PathToScripts"
-        $Result = Invoke-Expression "npm run lint -- $PathToScripts -c ${{ inputs.path-to-lint-config }}" | Out-String
+        $Result = Invoke-Expression "npm run lint -- $PathToScripts -c ${{ steps.config-file-path.outputs.path }}" | Out-String
 
         Write-Host "Displaying TSqlLint Results"
         if ($Result.ToLower() -like "*): error*") {     

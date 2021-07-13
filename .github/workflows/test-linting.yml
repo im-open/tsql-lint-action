@@ -12,5 +12,5 @@ jobs:
       - name: Test
         uses: ./
         with:
-          path-to-sql-files: ./.github/workflows/test-sql-files/
+          path-to-sql-files: ./.github/workflows/test-sql-files
           file-name-filter: ShouldSucceed.sql
