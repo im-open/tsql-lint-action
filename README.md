@@ -32,7 +32,7 @@ jobs:
 
       
       - name: SQL Lint
-        uses: ./.github/actions/tsqllint
+        uses: im-open/tsql-lint-action@v1.0.0
         with:
           tsqllint-version: 1.11.0
           path-to-sql-files: "Database/src/Migrations/${{ steps.sql-file-folder.outputs.folder }}"
