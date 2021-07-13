@@ -23,9 +23,9 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Install tsqllint
-      shell: bash
-      run: sudo npm install -g tsqllint@${{ inputs.tsqllint-version }}
+    - name: Npm Install
+      shell: pwsh
+      run: npm --prefix ${{ github.action_path }} install ${{ github.action_path }}
 
     - name: Determine config file path
       id: config-file-path
@@ -49,7 +49,7 @@ runs:
 
         $PathToScripts = "`"$(Resolve-Path ${{ inputs.path-to-sql-files }})\${{ inputs.file-name-filter }}`""
         echo "Running TSqlLint on folder $PathToScripts"
-        $Result = Invoke-Expression "tsqllint $PathToScripts -c ${{ steps.config-file-path.outputs.path }}" | Out-String
+        $Result = Invoke-Expression "npm --prefix ${{ github.action_path }} run lint --  $PathToScripts -c ${{ steps.config-file-path.outputs.path }}" | Out-String
 
         Write-Host "Displaying TSqlLint Results"
         if ($Result.ToLower() -like "*): error*") {     
