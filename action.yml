@@ -47,7 +47,7 @@ runs:
           return
         }
 
-        $PathToScripts = "`"$(Resolve-Path ${{ inputs.path-to-sql-files }})\${{ inputs.file-name-filter }}`""
+        $PathToScripts = "`"$(Join-Path $(Resolve-Path ${{ inputs.path-to-sql-files }}) ${{ inputs.file-name-filter }})`""
         echo "Running TSqlLint on folder $PathToScripts"
         $Result = Invoke-Expression "npm --prefix ${{ github.action_path }} run lint --  $PathToScripts -c ${{ steps.config-file-path.outputs.path }}" | Out-String
 

@@ -18,14 +18,33 @@ An Action that runs [tsqllint](https://github.com/tsqllint/tsqllint) on SQL file
 
 ### Example Output
 
+**No Errors**
+
+```
+Running TSqlLint on folder "C:\Database\Scripts\*.sql"
+Displaying TSqlLint Results
+TSqlLint Found 0 Errors
+
+Linted 1 files in 0.2623817 seconds
+
+0 Errors.
+0 Warnings
+```
+
+**1 Or More Errors**
 ```
 Running TSqlLint on folder "C:\Database\Scripts\*.sql"
 Displaying TSqlLint Results
 TSqlLint Found 1 or more Errors
+
 Write-Error: 
 C:\Database\Scripts\CreateTable.sql(1,40): error keyword-capitalization : Expected TSQL Keyword to be capitalized.
 C:\Database\Scripts\CreateTable.sql(15,15): error semicolon-termination : Statement not terminated with semicolon.
-C:\Database\Scripts\CreateTable.sql(41,114): error keyword-capitalization : Expected TSQL Keyword to be capitalized.
+C:\Database\Scripts\CreateSproc.sql(41,114): error keyword-capitalization : Expected TSQL Keyword to be capitalized.
+
+Linted 2 files in 0.9998865 seconds
+3 Errors.
+0 Warnings
 ```
 
 ## Example
