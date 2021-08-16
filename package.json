@@ -4,12 +4,15 @@
   "description": "",
   "main": "",
   "scripts": {
-    "lint": "tsqllint"
+    "lint": "cross-env-shell cd $INIT_CWD && tsqllint"
   },
   "keywords": [],
   "author": "wtw",
   "license": "ISC",
   "dependencies": {
     "tsqllint": "^1.11.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
