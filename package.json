@@ -4,7 +4,7 @@
   "description": "",
   "main": "",
   "scripts": {
-    "lint": "tsqllint"
+    "lint": "cd $INIT_CWD && tsqllint"
   },
   "keywords": [],
   "author": "wtw",
