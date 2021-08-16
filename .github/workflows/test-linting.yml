@@ -1,5 +1,5 @@
 name: Test Linting
-on: pull_request
+on: push
 
 jobs:
   test:
@@ -20,3 +20,4 @@ jobs:
         with:
           path-to-sql-files: ./.github/workflows/test-sql-files
           file-name-filter: ShouldSucceed.sql
+          path-to-lint-config: ./.github/config/.tsqllintrc
