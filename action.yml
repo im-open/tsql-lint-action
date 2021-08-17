@@ -51,7 +51,7 @@ runs:
         $AbsoluteConfigPath = Resolve-Path "${{ steps.config-file-path.outputs.path }}"
 
         echo "Running TSqlLint on folder $PathToScripts"
-        $Result = Invoke-Expression "npm --prefix ${{ github.action_path }} run lint --  $PathToScripts -c $AbsoluteConfigPath" | Out-String
+        $Result = Invoke-Expression "npm --prefix ${{ github.action_path }} run lint -- $PathToScripts -c $AbsoluteConfigPath" | Out-String
 
         Write-Host "Displaying TSqlLint Results"
         if ($Result.ToLower() -like "*): error*") {     
