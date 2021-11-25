@@ -12,16 +12,18 @@ inputs:
     required: true
   path-to-lint-config:
     description: Path to lint config. If not provided, defaults to the config at the root of this action.
+    required: false
   file-name-filter:
     description: Filters the files to lint by name.
+    required: false
 
 outputs:
   lint-result:
     description: The result of the lint run.
     value: ${{ steps.run-lint.outputs.result }}
-  
+
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: Npm Install
       shell: pwsh
