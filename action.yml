@@ -34,10 +34,10 @@ runs:
       shell: pwsh
       run: |
         if ([string]::IsNullOrEmpty("${{ inputs.path-to-lint-config }}") -or !(Test-Path ${{ inputs.path-to-lint-config }})) {
-          echo "::set-output name=path::${{ github.action_path }}/.tsqllintrc"
+          echo "path=${{ github.action_path }}/.tsqllintrc" >> $GITHUB_OUTPUT
         }
         else {
-          echo "::set-output name=path::${{ inputs.path-to-lint-config }}"
+          echo "path=${{ inputs.path-to-lint-config }}" >> $GITHUB_OUTPUT
         }
 
     - name: Run tsqllint
@@ -68,4 +68,4 @@ runs:
           Write-Host $Result
         }
 
-        echo "::set-output name=result::$(echo $Result)"
+        echo "result=$(echo $Result)" >> $GITHUB_OUTPUT
