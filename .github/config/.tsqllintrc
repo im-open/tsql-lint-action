@@ -26,7 +26,6 @@
         "unicode-string": "error"
     },
     "plugins": {
-        "wtw-custom-rules": "./.github/config/tsqllint-customrules.dll"
     },
     "compatability-level": 140
 }

@@ -20,7 +20,7 @@ inputs:
 outputs:
   lint-result:
     description: The result of the lint run.
-    value: ${{ steps.run-lint.outputs.result }}
+    value: ${{ steps.run-lint.outputs.LINT_RESULT }}
 
 runs:
   using: 'composite'
@@ -33,11 +33,15 @@ runs:
       id: config-file-path
       shell: pwsh
       run: |
+        # The syntax for setting outputs/envs in pwsh is slightly different than bash, for pwsh use:  "name=value" >> $env:GITHUB_OUTPUT
+
         if ([string]::IsNullOrEmpty("${{ inputs.path-to-lint-config }}") -or !(Test-Path ${{ inputs.path-to-lint-config }})) {
-          echo "path=${{ github.action_path }}/.tsqllintrc" >> $GITHUB_OUTPUT
+          Write-Host "Default to using the built in .tsllintrc file"
+          "path=${{ github.action_path }}/.tsqllintrc" >> $env:GITHUB_OUTPUT
         }
         else {
-          echo "path=${{ inputs.path-to-lint-config }}" >> $GITHUB_OUTPUT
+          Write-Host "Use the provided lint config file"
+          "path=${{ inputs.path-to-lint-config }}" >> $env:GITHUB_OUTPUT
         }
 
     - name: Run tsqllint
@@ -68,4 +72,8 @@ runs:
           Write-Host $Result
         }
 
-        echo "result=$(echo $Result)" >> $GITHUB_OUTPUT
+        # The syntax for setting outputs/envs in pwsh is slightly different than bash, for pwsh use:  "name=value" >> $env:GITHUB_OUTPUT
+        # Since this is a multi-line result, it also has to be escaped slightly differently.
+        'LINT_RESULT<<EOF' >> $env:GITHUB_OUTPUT
+        "$Result" >> $env:GITHUB_OUTPUT
+        'EOF' >> $env:GITHUB_OUTPUT
