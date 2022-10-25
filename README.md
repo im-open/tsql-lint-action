@@ -72,15 +72,21 @@ jobs:
 
       - id: sql-file-folder
         shell: pwsh
-        run: echo "::set-output name=folder::$($(Get-Date).Year).$($(Get-Date).Month.ToString("00"))"
+        run: |
+          folderName=$($(Get-Date).Year).$($(Get-Date).Month.ToString("00"))
+          echo "folder=$folderName" >> $GITHUB_OUTPUT
 
       - name: SQL Lint
-        uses: im-open/tsql-lint-action@v1.0.5
+        id: sql-lint
+        uses: im-open/tsql-lint-action@v1.1.0
         with:
           tsqllint-version: 1.11.0
           path-to-sql-files: "Database/src/Migrations/${{ steps.sql-file-folder.outputs.folder }}"
           file-name-filter: "*.sql"
           path-to-lint-config: ./Database/src/.tsqllintrc
+      
+      - name: Print Lint Result
+        run: echo '${{ steps.sql-lint.outputs.lint-result }}'
 ```
 
 ## Contributing

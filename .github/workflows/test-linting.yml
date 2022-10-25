@@ -16,8 +16,12 @@ jobs:
           node-version: '16'
 
       - name: Test
+        id: test
         uses: ./
         with:
           path-to-sql-files: ./.github/workflows/test-sql-files
           file-name-filter: ShouldSucceed.sql
           path-to-lint-config: ./.github/config/.tsqllintrc
+      
+      - name: Print Lint Result
+        run: echo '${{ steps.test.outputs.lint-result }}'
