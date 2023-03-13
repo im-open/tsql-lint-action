@@ -45,7 +45,7 @@ Linted 1 files in 0.2623817 seconds
 
 **1 Or More Errors**
 
-```
+```txt
 Running TSqlLint on folder "C:\Database\Scripts\*.sql"
 Displaying TSqlLint Results
 TSqlLint Found 1 or more Errors
@@ -77,7 +77,8 @@ jobs:
 
       - name: SQL Lint
         id: sql-lint
-        uses: im-open/tsql-lint-action@v1.1.0
+        # You may also reference the major or major.minor version
+        uses: im-open/tsql-lint-action@v1.1.1
         with:
           tsqllint-version: 1.11.0
           path-to-sql-files: "Database/src/Migrations/${{ steps.sql-file-folder.outputs.folder }}"
