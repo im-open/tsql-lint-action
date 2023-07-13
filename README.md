@@ -78,7 +78,7 @@ jobs:
       - name: SQL Lint
         id: sql-lint
         # You may also reference the major or major.minor version
-        uses: im-open/tsql-lint-action@v1.1.1
+        uses: im-open/tsql-lint-action@v1.1.2
         with:
           tsqllint-version: 1.11.0
           path-to-sql-files: "Database/src/Migrations/${{ steps.sql-file-folder.outputs.folder }}"
