@@ -7,7 +7,7 @@ An action that runs [tsqllint](https://github.com/tsqllint/tsqllint) on SQL file
 - [tsql-lint-action](#tsql-lint-action)
   - [Inputs](#inputs)
   - [Outputs](#outputs)
-    - [Usage Examples Output](#usage-examples-output)
+    - [Example Output](#example-output)
   - [Usage Examples](#usage-examples)
   - [Contributing](#contributing)
     - [Incrementing the Version](#incrementing-the-version)
@@ -31,7 +31,7 @@ An action that runs [tsqllint](https://github.com/tsqllint/tsqllint) on SQL file
 |---------------|--------------------------------------------------------|
 | `lint-result` | The result returned from running the tsqllint command. |
 
-### Usage Examples Output
+### Example Output
 
 **No Errors**
 
